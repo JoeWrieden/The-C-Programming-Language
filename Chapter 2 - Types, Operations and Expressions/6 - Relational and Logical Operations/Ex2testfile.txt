@@ -1,0 +1,6 @@
+Hello this is line 1
+Line 2 is slightly longer and will have lots of words
+Line 3 is small
+Line 4 is the line that there is in this file and will trump many other lines
+Line 5 is modest and happy with his position in the list
+Line 6 is the biggest line that there is in this file and will most definatly be the longest ever
