@@ -25,14 +25,14 @@ int getlinex(char *s, int lim){
     i = 0;
 
     while(--lim > 0 && (c= getchar()) != EOF && c != '\n') {
-        *s = c;
-        s++;
+        *(s+i) = c;
+        i++;
     }
     if (c == '\n') {
-        *s = '\n';
-        s++;
+        *(s+i) = '\n';
+        i++;
     }
 
-    *s = '\0';
+    *(s+i) = '\0';
     return i;
 }
