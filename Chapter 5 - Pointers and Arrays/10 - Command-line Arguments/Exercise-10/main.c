@@ -3,9 +3,8 @@
 #include <ctype.h>
 #include <string.h>
 
-#define MAXOP 100 /* max size of operand or operator */
 #define NUMBER '0' /* signal that a number was found */
-#define MAXVAL 100
+#define MAXVAL 1000
 
 
 int sp = 0;
@@ -20,7 +19,7 @@ int main(int argc, char *argv[])
 {
     int type;
     int c;
-    double op1, op2, latest;
+    double op2, latest;
     while (--argc > 0)
     {
         ++argv;
