@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <string.h>
 
 void tailx(char *[], int, int);
 
