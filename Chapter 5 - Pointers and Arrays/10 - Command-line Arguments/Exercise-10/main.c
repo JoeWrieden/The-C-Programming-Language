@@ -19,6 +19,7 @@ int main(int argc, char *argv[])
 {
     int type;
     int c;
+    char *p;
     double op2, latest;
     while (--argc > 0)
     {
@@ -30,7 +31,7 @@ int main(int argc, char *argv[])
         switch (type)
         {
             case NUMBER:
-                push(atof(*argv));
+                push(atof(**argv));
                 break;
             case '+':
                 push(pop() + pop());
