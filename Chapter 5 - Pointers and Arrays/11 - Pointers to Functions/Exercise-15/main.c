@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <ctype.h>
 #include "StrComp.h"
 
 char *lineptr[MAXLINES];
@@ -9,13 +10,19 @@ char *lineptr[MAXLINES];
 /* sort input lines */
 int main(int argc, char *argv[]) {
     int nlines;
-    int numeric = 0, reverse = 0, fold = 0;
-
-    if (argc > 1 && (strcmp(argv[1], "-n") || strcmp(argv[2], "-n")) == 0)
-        numeric = 1;
-
+    int numeric = 0, reverse = 0, foldline = 0;
+    while (--argc > 0) {
+        if (strcmp(*++argv, "-n") == 0)
+            numeric = 1;
+        else if (strcmp(*argv, "-r") == 0)
+            reverse = 1;
+        else if (strcmp(*argv, "-f") == 0)
+            foldline = 1;
+    }
     if ((nlines = readlines(lineptr, MAXLINES)) >= 0) {
-        qsortx((void **) lineptr, 0, nlines - 1, (int (*)(void *, void *)) (numeric ? numcmp : strcmp));
+        qsortx((void **) lineptr, 0, nlines - 1, (int (*)(void *, void *)) (numeric ? numcmp : (foldline ? strcmp_f : strcmp)));
+        if (reverse == 1)
+            reversex(lineptr);
 
         writelines(lineptr, nlines);
         return 0;
@@ -58,4 +65,24 @@ void swap(void *v[], int i, int j){
     temp = v[i];
     v[i] = v[j];
     v[j] = temp;
+}
+
+void reversex(char *s){
+    int c, i, j;
+
+    for ( i = 0, j = strlen(s)-1; i < j; i++, j--) {
+        c = *(s+i);
+        *(s+i) = *(s+j);
+        *(s+j) = c;
+    }
+}
+
+/* strcmp_f */
+int strcmp_f(char *s, char *t)
+{
+    for ( ; toupper(*s) == toupper(*t); s++, t++)
+        if (*s == '\0')
+            return 0;
+
+    return toupper(*s) - toupper(*t);
 }

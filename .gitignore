@@ -4,3 +4,4 @@ CMakeLists
 *.cmd
 *.exe
 *.txt
+*.gch
