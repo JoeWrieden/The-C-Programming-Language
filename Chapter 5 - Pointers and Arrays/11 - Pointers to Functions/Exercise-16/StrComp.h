@@ -8,4 +8,4 @@ void swap(void *v[], int, int);
 void qsortx(void *lineptr[], int left, int right, int (*comp)(void *, void *));
 int numcmp(char *, char *);
 void reversex(char *);
-int strcmp_f(char *s, char *t);
+int mystrcmp(char *, char *);

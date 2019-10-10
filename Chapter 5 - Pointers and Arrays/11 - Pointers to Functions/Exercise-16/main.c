@@ -5,12 +5,11 @@
 #include "StrComp.h"
 
 char *lineptr[MAXLINES];
-
+int numeric = 0, reverse = 0, foldline = 0, directory = 0;
 
 /* sort input lines */
 int main(int argc, char *argv[]) {
     int nlines;
-    int numeric = 0, reverse = 0, foldline = 0, directory = 0;
     while (--argc > 0) {
         if (strcmp(*++argv, "-n") == 0)
             numeric = 1;
@@ -22,7 +21,7 @@ int main(int argc, char *argv[]) {
             directory = 1;
     }
     if ((nlines = readlines(lineptr, MAXLINES)) >= 0) {
-        qsortx((void **) lineptr, 0, nlines - 1, (int (*)(void *, void *)) (numeric ? numcmp : (foldline ? strcmp_f : strcmp)));
+        qsortx((void **) lineptr, 0, nlines - 1, (int (*)(void *, void *)) (numeric ? numcmp : mystrcmp));
         if (reverse == 1)
             reversex(lineptr);
 
@@ -80,16 +79,27 @@ void reversex(char *s){
     }
 }
 
-/* strcmp_f */
-int strcmp_f(char *s, char *t)
-{
-    for ( ; toupper(*s) == toupper(*t); s++, t++)
-        if (*s == '\0')
+
+
+int mystrcmp(char *s1, char *s2) {
+    if (directory){
+        while (!isalpha(*s1) && !isdigit(*s1) && !isspace(*s1) && *s1)
+            s1++;
+        while (!isalpha(*s2) && !isdigit(*s2) && !isspace(*s2) && *s2)
+            s2++;
+    }
+    while (foldline ? (tolower(*s1) == tolower(*s2)):(*s1 == *s2)) {
+        if (*s1 == '\0')
             return 0;
+        s1++;
+        s2++;
+    }
+    if (directory){
+        while (!isalpha(*s1) && !isdigit(*s1) && !isspace(*s1) && *s1)
+            s1++;
+        while (!isalpha(*s2) && !isdigit(*s2) && !isspace(*s2) && *s2)
+            s2++;
+    }
+    return foldline ? (tolower(*s1) - tolower(*s2)) : (*s1 - *s2);
 
-    return toupper(*s) - toupper(*t);
-}
-
-int strcmp_d(char *s, char *t){
-    for (; )
 }
