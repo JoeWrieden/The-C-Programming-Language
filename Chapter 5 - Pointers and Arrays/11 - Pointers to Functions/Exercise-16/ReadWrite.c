@@ -28,7 +28,6 @@ void writelines(char *lineptr[], int nlines){
         printf("%s\n", *lineptr++);
 }
 
-
 int getlinex(char s[], int lim){
 
     int c, i;

@@ -7,7 +7,6 @@
 char *lineptr[MAXLINES];
 int numeric = 0, reverse = 0, foldline = 0, directory = 0;
 
-/* sort input lines */
 int main(int argc, char *argv[]) {
     int nlines;
     while (--argc > 0) {
@@ -61,7 +60,6 @@ int numcmp(char *s1, char *s2){
         return 0;
 }
 
-
 void swap(void *v[], int i, int j){
     void *temp;
     temp = v[i];
@@ -78,8 +76,6 @@ void reversex(char *s){
         *(s+j) = c;
     }
 }
-
-
 
 int mystrcmp(char *s1, char *s2) {
     if (directory){
@@ -101,5 +97,4 @@ int mystrcmp(char *s1, char *s2) {
             s2++;
     }
     return foldline ? (tolower(*s1) - tolower(*s2)) : (*s1 - *s2);
-
 }
