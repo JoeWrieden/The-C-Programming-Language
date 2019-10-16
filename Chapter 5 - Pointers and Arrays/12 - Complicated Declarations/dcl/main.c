@@ -69,8 +69,7 @@ void dirdcl(void){
 }
 
 int gettoken(void){
-    int c, getch(void);
-    void ungetch(int);
+    int c;
     char *p = token;
 
     while ((c = getch()) == ' ' || c == '\t')
