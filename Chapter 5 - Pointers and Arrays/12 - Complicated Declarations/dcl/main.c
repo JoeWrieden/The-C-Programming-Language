@@ -6,7 +6,7 @@
 #define BUFSIZE 100
 
 
-enum { NAME, PARENS, BRACKETS};
+enum {NAME, PARENS, BRACKETS};
 
 void dcl(void);
 void dirdcl(void);
