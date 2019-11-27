@@ -9,14 +9,6 @@
 char buf[BUFSIZE];
 int bufp = 0;
 
-struct tnode *addtree(struct tnode *, char *);
-void treeprint(struct tnode *);
-int getword(char *, int);
-struct tnode *talloc(void);
-char *strdupx(char *);
-struct tnode *addnewtree(struct tnode *p, struct tnode *q);
-struct tnode *createOrderedTree(struct tnode *n, struct tnode *q);
-
 struct tnode {
     char *word;
     int count;
@@ -24,41 +16,37 @@ struct tnode {
     struct tnode *right;
 };
 
-int main() {
-    struct tnode *root, *newRoot;
-    char word[MAXWORD];
-    newRoot = NULL;
-    root = NULL;
+struct tnode *addtree(struct tnode *, char *);
+void treeprint(struct tnode *);
+int getword(char *, int);
+struct tnode *talloc(void);
+char *strdupx(char *);
+int count_tree_elements(struct tnode*);
+int copy_tree_to_array(struct tnode array[], int count, struct tnode *root);
+int compare_tnode(const void*, const void*);
 
+int main() {
+    int i = 0;
+    struct tnode *root;
+    char word[MAXWORD];
+
+
+    root = NULL;
     while (getword(word, MAXWORD) != EOF)
         if (isalpha(word[0]))
             root = addtree(root, word);
-    treeprint(newRoot);
+
+    int tree_size = count_tree_elements(root);
+    struct tnode tnode_array[tree_size];
+
+    // copy struct tnodes into array
+    copy_tree_to_array(tnode_array, 0, root);
+
+    qsort(tnode_array, tree_size, sizeof(struct tnode), compare_tnode);
+
+    for (int i=0; i < tree_size; i++)
+        printf("%4d : %s",tnode_array[i].count, tnode_array[i].word);
     return 0;
-}
-
-struct tnode *createOrderedTree(struct tnode *n, struct tnode *q){
-    if (n != NULL){
-        createOrderedTree(n, q->left);
-        printf("%4d, %s", addnewtree(n, q)->count, addnewtree(n, q)->word);
-         createOrderedTree(n, q->right);
-    }
-    return n;
-}
-
-struct tnode *addnewtree(struct tnode *p, struct tnode *q){
-    int cond;
-
-    if (p == NULL){
-        p = talloc();
-        p->word = strdupx(q->word);
-        p->count = 1;
-        p->left = p->right = NULL;
-    } else if ((cond = (p->count < q-> count)) == 0 || cond < 0)
-        p->left = addtree(p->left,q);
-    else
-        p->right = addtree(p->right,q);
-    return p;
 }
 
 int getword(char *word, int lim){
@@ -130,4 +118,34 @@ void ungetch(int c){
         printf("ungetch: too many characters");
     else
         buf[bufp++] = c;
+}
+
+int count_tree_elements(struct tnode *root) {
+    int count = 1;
+    if (root == NULL)
+        return 0;
+
+    count += count_tree_elements(root->left);
+    count += count_tree_elements(root->right);
+    return count;
+}
+
+int copy_tree_to_array(struct tnode array[], int count, struct tnode *root) {
+
+    if (root == NULL)
+        return count;
+
+    array[count++] = *root;
+    if (root->left != NULL)
+        count = copy_tree_to_array(array, count, root->left);
+    if (root->right != NULL)
+        count = copy_tree_to_array(array, count, root->right);
+
+    return count;
+}
+
+int compare_tnode(const void *elem1, const void *elem2) {
+    return (((struct tnode*) elem2)->count
+            -
+            ((struct tnode*) elem1)->count);
 }
