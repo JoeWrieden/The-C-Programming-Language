@@ -22,7 +22,10 @@ int main() {
     install("World", "2");
     printf("%s : %s\n",lookup("Hello")->name, lookup("Hello")->defn);
     undef("Hello");
-    printf("%s : %s\n",lookup("Hello")->name, lookup("Hello")->defn);
+    if (lookup("Hello"))
+        printf("%s : %s\n",lookup("Hello")->name, lookup("Hello")->defn);
+    else
+        printf("%p", lookup("Hello"));
     return 0;
 }
 
@@ -76,10 +79,11 @@ void undef(char *s){
 
     prev = NULL;
     h = hash(s);
-    for (np = hashtab[h]; np != NULL; np = np->next)
-        if (strcmp(s, np->name))
+    for (np = hashtab[h]; np != NULL; np = np->next) {
+        if (strcmp(s, np->name) == 0)
             break;
         prev = np;
+    }
     if (np != NULL){
         if (prev == NULL)
             hashtab[h] = np->next;
