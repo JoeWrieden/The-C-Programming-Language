@@ -5,13 +5,13 @@
 int main(int argc, char *argv[]) {
     int c;
 
-    if (strcmp(argv[0],'-u') == 0){
+    if (strcmp(argv[1],"-u") == 0){
         while ((c = getchar()) != EOF)
             putchar(toupper(c));
     }
-    else if (strcmp(argv[0], '-l') == 0 ){
+    else if (strcmp(argv[1], "-l") == 0 ){
         while((c = getchar()) != EOF)
-            putchar(tolower);
+            putchar(tolower(c));
     }
     else
         printf("Enter a case specifier -u for upper and -l for lower");
